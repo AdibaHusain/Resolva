@@ -6,26 +6,21 @@ import { successResponse, errorResponse } from '../utils/apiResponse.js';
 import { computeSLADeadline }             from '../services/sla.service.js';
 
 // ─── Student: submit new complaint ───────────────────────────────────────────
+import { analyzeComplaint } from '../services/ai.service.js';
+
 export const createComplaint = asyncHandler(async (req, res) => {
   const { title, description, category, location, isAnonymous } = req.body;
-
-  // Collect uploaded media URLs from Cloudinary (set by upload middleware)
   const mediaUrls = (req.files || []).map(f => f.path);
 
   const complaint = await Complaint.create({
-    title,
-    description,
-    category,
-    location,
-    isAnonymous,
+    title, description, category, location, isAnonymous,
     mediaUrls,
-    raisedBy: req.user._id,   // always stored, never exposed if anonymous
-    status:   'open',
-    priority: 'medium',       // AI will overwrite this in Phase 2
+    raisedBy:      req.user._id,
+    status:        'open',
+    priority:      'medium',     // default until AI runs
     severityScore: 5,
   });
 
-  // Write the first audit entry — this seeds the transparency timeline
   await AuditLog.create({
     complaint:   complaint._id,
     performedBy: req.user._id,
@@ -34,26 +29,54 @@ export const createComplaint = asyncHandler(async (req, res) => {
     remark:      'Complaint submitted',
   });
 
-  // Sanitize before returning — hide raisedBy if anonymous
   const safe = complaint.toObject();
   if (safe.isAnonymous) delete safe.raisedBy;
 
-  return successResponse(res, safe, 'Complaint submitted successfully', 201);
-});
+  // ── Return 201 immediately — don't make student wait ──────────────────────
+  res.status(201).json({ success: true, message: 'Complaint submitted successfully', data: safe });
 
-// ─── Anyone: get single complaint with populated refs ────────────────────────
-export const getComplaint = asyncHandler(async (req, res) => {
-  const complaint = await Complaint
-    .findById(req.params.id)
-    .populate('assignedTo', 'name email role')
-    .populate('department', 'name code');
+  // ── AI runs AFTER response is sent ────────────────────────────────────────
+  // setImmediate schedules this in the next iteration of the event loop,
+  // after the response has been flushed to the client
+  setImmediate(async () => {
+    try {
+      const aiResult = await analyzeComplaint(title, description, category);
 
-  if (!complaint) return errorResponse(res, 'Complaint not found', 404);
+      if (!aiResult) return; // AI failed — defaults stay, no crash
 
-  const safe = complaint.toObject();
-  if (safe.isAnonymous) delete safe.raisedBy;
+      const updates = {
+        priority:            aiResult.priority,
+        severityScore:       aiResult.severityScore,
+        suggestedDepartment: aiResult.suggestedDepartment,
+        aiReason:            aiResult.aiReason,
+      };
 
-  return successResponse(res, safe);
+      // Only override category if AI is confident it's wrong
+      if (aiResult.category && aiResult.category !== category) {
+        updates.category = aiResult.category;
+      }
+
+      // Auto-escalate: if AI says critical + urgent, bump to highest priority
+      if (aiResult.isUrgent && aiResult.priority === 'critical') {
+        updates.priority = 'critical';
+      }
+
+      await Complaint.findByIdAndUpdate(complaint._id, updates);
+
+      // Write a second AuditLog entry so the timeline shows AI analysis
+      await AuditLog.create({
+        complaint:   complaint._id,
+        performedBy: req.user._id, // could also be a system user ID
+        action:      'ai_analyzed',
+        remark:      `AI: severity ${aiResult.severityScore}/10 — ${aiResult.aiReason}`,
+      });
+
+      console.log(`[AI] Complaint ${complaint._id} updated: priority=${aiResult.priority}, score=${aiResult.severityScore}`);
+    } catch (err) {
+      // Silent failure — complaint exists with defaults, nothing broken
+      console.error('[AI] Background update failed:', err.message);
+    }
+  });
 });
 
 // ─── Student: my complaints ───────────────────────────────────────────────────

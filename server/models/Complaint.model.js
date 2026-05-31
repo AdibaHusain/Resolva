@@ -22,6 +22,8 @@ const complaintSchema = new mongoose.Schema({
   slaBreach:     { type: Boolean, default: false },
   resolvedAt:    { type: Date },
   closedRemark:  { type: String },
+  suggestedDepartment: { type: String, default: '' },
+aiReason:            { type: String, default: '' },
 }, { timestamps: true });
 
 // Text index for search
