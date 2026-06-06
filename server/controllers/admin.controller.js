@@ -43,7 +43,7 @@ export const getDashboardStats = asyncHandler(async (req, res) => {
   return successResponse(res, { total, open, inProgress, resolved, critical, breached });
 });
 
-// ── Saare staff members list ──────────────────────────────────────────────────
+// ── Saare staff members ───────────────────────────────────────────────────────
 export const getStaffList = asyncHandler(async (req, res) => {
   const staff = await User.find({ role: 'staff', isActive: true })
     .select('name email department');

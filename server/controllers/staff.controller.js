@@ -22,13 +22,12 @@ export const completeTask = asyncHandler(async (req, res) => {
   const complaint  = await Complaint.findById(req.params.id);
   if (!complaint) return errorResponse(res, 'Not found', 404);
 
-  // Sirf apna assigned task complete kar sakta hai staff
   if (String(complaint.assignedTo) !== String(req.user._id)) {
     return errorResponse(res, 'Not your task', 403);
   }
 
-  const prev         = complaint.status;
-  complaint.status   = 'resolved';
+  const prev           = complaint.status;
+  complaint.status     = 'resolved';
   complaint.resolvedAt = new Date();
 
   if (complaint.slaDeadline && complaint.slaDeadline < new Date()) {
