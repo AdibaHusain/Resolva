@@ -1,3 +1,4 @@
+import { getIO } from '../sockets/index.js';
 import Complaint  from '../models/Complaint.model.js';
 import AuditLog   from '../models/AuditLog.model.js';
 import Vote       from '../models/Vote.model.js';
