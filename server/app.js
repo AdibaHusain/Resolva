@@ -11,7 +11,7 @@ import { errorResponse }  from './utils/apiResponse.js';
 
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 
@@ -22,6 +22,9 @@ app.use('/api/staff',         staffRoutes);
 app.use('/api/departments',   departmentRoutes);
 app.use('/api/notifications', notificationRoutes);
 
-app.use((err, req, res, next) => errorResponse(res, err.message, err.status || 500));
+app.use((err, req, res, next) => {
+  console.error('[ERROR]', err.message, err.stack); // terminal mein dikhega
+  errorResponse(res, err.message, err.status || 500);
+});
 
 export default app;
