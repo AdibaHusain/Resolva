@@ -1,9 +1,7 @@
-import { useSocket } from './hooks/useSocket';
+import { useSocket } from './hooks/useSocket'
+import AppRouter from './router/AppRouter'
 
 export default function App() {
-  useSocket(); // Bas ye ek line — login hote hi connect ho jaata hai
-
-  return (
-    <AppRouter />
-  );
+  useSocket()
+  return <AppRouter />
 }

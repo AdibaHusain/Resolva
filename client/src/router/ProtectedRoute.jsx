@@ -1,12 +1,12 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { Navigate, Outlet } from 'react-router-dom'
+import { useAuthStore } from '../store/authStore'
 
-export const useAuthStore = create(persist(
-  (set) => ({
-    user:  null,
-    token: null,
-    setAuth: (user, token) => set({ user, token }),
-    clearAuth: () => set({ user: null, token: null }),
-  }),
-  { name: 'campuspulse-auth' }
-));
+export default function ProtectedRoute({ allowedRoles }) {
+  const { user, token } = useAuthStore()
+
+  if (!token || !user) return <Navigate to="/login" replace />
+  if (allowedRoles && !allowedRoles.includes(user.role))
+    return <Navigate to="/unauthorized" replace />
+
+  return <Outlet />
+}
