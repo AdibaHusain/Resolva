@@ -4,8 +4,11 @@ export const createComplaintSchema = z.object({
   title:       z.string().min(5, 'Title must be at least 5 characters').max(120),
   description: z.string().min(10, 'Description too short').max(2000),
   category:    z.enum(['electrical','plumbing','wifi','hostel','academic','food','safety','event','other']),
-  location:    z.string().min(2).max(120).optional(),
-  isAnonymous: z.boolean().optional().default(false),
+  location:    z.string().min(0).max(120).optional(),
+  isAnonymous: z.preprocess(
+    val => val === 'true' || val === true,
+    z.boolean()
+  ).optional().default(false),
 });
 
 export const updateComplaintSchema = z.object({
