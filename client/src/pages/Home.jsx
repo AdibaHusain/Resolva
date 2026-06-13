@@ -1,3 +1,5 @@
+import logo from '../assets/logo.png'
+import { Zap, Radio, LayoutDashboard, Clock, Shield, BarChart3 } from 'lucide-react'
 import FloatingLines from '../components/FloatingLines'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -367,11 +369,12 @@ export default function Home() {
           cursor: default;
         }
         .feat-card:hover { background: #0C1525; }
-        .feat-icon {
-          width: 40px; height: 40px; border-radius: 10px;
-          display: flex; align-items: center; justify-content: center;
-          margin-bottom: 18px;
-        }
+       .feat-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+  /* color already set via inline style={color} — it inherits to SVG */
+}
         .feat-title { font-size: 15px; font-weight: 600; color: #F1F5F9; margin-bottom: 10px; }
         .feat-desc  { font-size: 13.5px; color: '#475569'; line-height: 1.7; color: #64748B; }
 
@@ -520,14 +523,22 @@ export default function Home() {
       <nav className={`nav ${scrollY > 30 ? 'scrolled' : ''}`}>
         <div className="nav-inner">
           <div className="nav-brand" onClick={() => window.scrollTo({ top:0, behavior:'smooth' })}>
-            <div className="nav-icon">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E5FF" strokeWidth="1.8" strokeLinecap="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-              </svg>
-            </div>
-            <span className="nav-wordmark">Resolva</span>
-          </div>
+  <img 
+    src={logo} 
+    alt="Resolva" 
+    style={{ width: 38, height: 38, borderRadius: 9, objectFit: 'contain' }} 
+  />
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+    <span style={{
+      fontSize: 13, fontWeight: 700, letterSpacing: 3,
+      color: '#F8FAFC', lineHeight: 1,
+    }}>RESOLVA</span>
+    <span style={{
+      fontSize: 8, fontWeight: 500, letterSpacing: 2.5,
+      color: '#00B4D8', lineHeight: 1,
+    }}>CAMPUS MANAGEMENT</span>
+  </div>
+</div>
           <div className="nav-links">
             <a href="#features"     className="nav-link">Features</a>
             <a href="#how-it-works" className="nav-link">How it works</a>
@@ -630,8 +641,8 @@ export default function Home() {
 
           <div className="features-grid">
             {FEATURES.map((f, i) => (
-              <FeatCard key={i} {...f} delay={d(i, 0.05)}/>
-            ))}
+  <FeatCard key={i} {...f} index={i} delay={d(i, 0.05)}/>
+))}
           </div>
         </div>
       </section>
@@ -804,12 +815,12 @@ export default function Home() {
 
 // ── Feature card component ─────────────────────────────────────────────────
 const FEAT_ICONS = [
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="12" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/></svg>,
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
+  <Zap size={18} />,
+  <Radio size={18} />,
+  <LayoutDashboard size={18} />,
+  <Clock size={18} />,
+  <Shield size={18} />,
+  <BarChart3 size={18} />,
 ]
 
 function FeatCard({ color, title, desc, delay, index: _i }) {

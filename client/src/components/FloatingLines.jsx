@@ -107,8 +107,7 @@ export default function FloatingLines({
           }
 
           // Per-line alpha variation
-          const brightness = 0.5 + 0.5 * Math.abs(Math.sin(t * 0.3 + li * 0.7))
-          ctx.globalAlpha = grp.alpha * brightness
+          ctx.globalAlpha = grp.alpha
 
           const g = buildGrad(ctx, W, H)
           ctx.strokeStyle = g
@@ -128,7 +127,7 @@ export default function FloatingLines({
 
           // Glow for thicker lines
           if (grp.width > 1) {
-            ctx.globalAlpha = grp.alpha * brightness * 0.15
+            ctx.globalAlpha = grp.alpha 
             ctx.lineWidth   = grp.width * 4
             ctx.stroke()
           }
