@@ -10,11 +10,14 @@ import KanbanBoard from '../pages/admin/KanbanBoard'
 import Analytics from '../pages/admin/Analytics'
 import StaffDashboard from '../pages/staff/Dashboard'
 import TaskDetail from '../pages/staff/TaskDetail'
+import Home from '../pages/Home'
+
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login"    element={<Login />} />
         <Route path="/register" element={<Register />} />
 

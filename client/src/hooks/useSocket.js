@@ -11,6 +11,7 @@ export const useSocket = () => {
 
   useEffect(() => {
     // Token nahi hai ya already connected hai toh skip
+    if (!token || !user) return;
     if (!token || !user || initialized.current) return;
 
     // ── Connect karo ────────────────────────────────────────────────────────
