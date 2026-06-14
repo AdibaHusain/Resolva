@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import logo from '../../assets/logo.png'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -32,168 +33,152 @@ export default function Login() {
     window.addEventListener('resize', onResize)
 
     const draw = () => {
-  t += 0.003
-  ctx.clearRect(0, 0, W, H)
+      t += 0.003
+      ctx.clearRect(0, 0, W, H)
 
-  // Deep warm black base
-  ctx.fillStyle = '#080600'
-  ctx.fillRect(0, 0, W, H)
+      // Deep navy base — matches home page #060B14
+      ctx.fillStyle = '#060B14'
+      ctx.fillRect(0, 0, W, H)
 
-  // ── Main spotlight — soft cone from top-left ──────────────────────────
-  // Multiple layered cones — blended soft edges, not hard triangle
-  const spotCenterX = W * 0.14
-  const spotCenterY = H * 0.0
+      // Main spotlight — cyan/blue cone from top-left
+      const spotCenterX = W * 0.14
+      const spotCenterY = H * 0.0
 
-  // Cone layer 1 — widest, most transparent
-  const cone1 = ctx.createRadialGradient(
-    spotCenterX, spotCenterY, 0,
-    spotCenterX + W * 0.18, H * 0.85, H * 0.95
-  )
-  cone1.addColorStop(0,    'rgba(255, 220, 120, 0.0)')
-  cone1.addColorStop(0.08, 'rgba(220, 170,  60, 0.09)')
-  cone1.addColorStop(0.25, 'rgba(180, 130,  30, 0.06)')
-  cone1.addColorStop(0.55, 'rgba(140, 100,  15, 0.03)')
-  cone1.addColorStop(1,    'rgba(0,   0,     0, 0)')
-  ctx.fillStyle = cone1
-  ctx.fillRect(0, 0, W, H)
+      // Cone layer 1 — widest, most transparent
+      const cone1 = ctx.createRadialGradient(
+        spotCenterX, spotCenterY, 0,
+        spotCenterX + W * 0.18, H * 0.85, H * 0.95
+      )
+      cone1.addColorStop(0,    'rgba(0, 180, 216, 0.0)')
+      cone1.addColorStop(0.08, 'rgba(0, 150, 200, 0.08)')
+      cone1.addColorStop(0.25, 'rgba(0, 120, 180, 0.05)')
+      cone1.addColorStop(0.55, 'rgba(0, 80, 140, 0.025)')
+      cone1.addColorStop(1,    'rgba(0, 0, 0, 0)')
+      ctx.fillStyle = cone1
+      ctx.fillRect(0, 0, W, H)
 
-  // Cone layer 2 — medium, slightly brighter core
-  const cone2 = ctx.createRadialGradient(
-    spotCenterX, spotCenterY, 0,
-    spotCenterX + W * 0.1, H * 0.75, H * 0.72
-  )
-  cone2.addColorStop(0,    'rgba(255, 230, 140, 0.0)')
-  cone2.addColorStop(0.06, 'rgba(240, 190,  80, 0.12)')
-  cone2.addColorStop(0.2,  'rgba(200, 150,  40, 0.07)')
-  cone2.addColorStop(0.45, 'rgba(160, 110,  20, 0.03)')
-  cone2.addColorStop(1,    'rgba(0,   0,     0, 0)')
-  ctx.fillStyle = cone2
-  ctx.fillRect(0, 0, W, H)
+      // Cone layer 2 — medium, slightly brighter core
+      const cone2 = ctx.createRadialGradient(
+        spotCenterX, spotCenterY, 0,
+        spotCenterX + W * 0.1, H * 0.75, H * 0.72
+      )
+      cone2.addColorStop(0,    'rgba(0, 229, 255, 0.0)')
+      cone2.addColorStop(0.06, 'rgba(0, 200, 240, 0.10)')
+      cone2.addColorStop(0.2,  'rgba(0, 165, 210, 0.06)')
+      cone2.addColorStop(0.45, 'rgba(0, 120, 180, 0.025)')
+      cone2.addColorStop(1,    'rgba(0, 0, 0, 0)')
+      ctx.fillStyle = cone2
+      ctx.fillRect(0, 0, W, H)
 
-  // Cone layer 3 — tight bright core beam
-  const cone3 = ctx.createRadialGradient(
-    spotCenterX, spotCenterY, 0,
-    spotCenterX + W * 0.055, H * 0.62, H * 0.52
-  )
-  cone3.addColorStop(0,    'rgba(255, 245, 180, 0.0)')
-  cone3.addColorStop(0.04, 'rgba(255, 220, 100, 0.16)')
-  cone3.addColorStop(0.14, 'rgba(220, 170,  55, 0.10)')
-  cone3.addColorStop(0.3,  'rgba(180, 130,  30, 0.05)')
-  cone3.addColorStop(0.6,  'rgba(120,  90,  10, 0.02)')
-  cone3.addColorStop(1,    'rgba(0,    0,    0, 0)')
-  ctx.fillStyle = cone3
-  ctx.fillRect(0, 0, W, H)
+      // Cone layer 3 — tight bright core beam
+      const cone3 = ctx.createRadialGradient(
+        spotCenterX, spotCenterY, 0,
+        spotCenterX + W * 0.055, H * 0.62, H * 0.52
+      )
+      cone3.addColorStop(0,    'rgba(0, 229, 255, 0.0)')
+      cone3.addColorStop(0.04, 'rgba(0, 220, 255, 0.14)')
+      cone3.addColorStop(0.14, 'rgba(14, 165, 233, 0.09)')
+      cone3.addColorStop(0.3,  'rgba(0, 100, 180, 0.04)')
+      cone3.addColorStop(0.6,  'rgba(0, 60, 120, 0.015)')
+      cone3.addColorStop(1,    'rgba(0, 0, 0, 0)')
+      ctx.fillStyle = cone3
+      ctx.fillRect(0, 0, W, H)
 
-  // ── Subtle warm ambient — left side wall bounce ────────────────────────
-  const wallBounce = ctx.createRadialGradient(0, H * 0.4, 0, 0, H * 0.4, W * 0.45)
-  wallBounce.addColorStop(0,   'rgba(160, 110, 20, 0.06)')
-  wallBounce.addColorStop(0.5, 'rgba(120,  80, 10, 0.02)')
-  wallBounce.addColorStop(1,   'rgba(0,     0,  0, 0)')
-  ctx.fillStyle = wallBounce
-  ctx.fillRect(0, 0, W, H)
+      // Subtle indigo ambient — right side
+      const ambientRight = ctx.createRadialGradient(W, H * 0.5, 0, W, H * 0.5, W * 0.55)
+      ambientRight.addColorStop(0,   'rgba(99, 102, 241, 0.05)')
+      ambientRight.addColorStop(0.5, 'rgba(80, 84, 200, 0.02)')
+      ambientRight.addColorStop(1,   'rgba(0, 0, 0, 0)')
+      ctx.fillStyle = ambientRight
+      ctx.fillRect(0, 0, W, H)
 
-  // ── Atmospheric haze in beam path ─────────────────────────────────────
-  // Soft haze layer that follows beam direction
-  ctx.save()
-  ctx.globalAlpha = 0.4 + 0.08 * Math.sin(t * 0.5)
-  const haze = ctx.createLinearGradient(
-    spotCenterX, 0,
-    W * 0.42, H * 0.7
-  )
-  haze.addColorStop(0,    'rgba(200, 150, 40, 0.00)')
-  haze.addColorStop(0.15, 'rgba(180, 130, 30, 0.04)')
-  haze.addColorStop(0.4,  'rgba(160, 110, 20, 0.025)')
-  haze.addColorStop(0.7,  'rgba(130,  90, 10, 0.01)')
-  haze.addColorStop(1,    'rgba(0,     0,  0, 0.00)')
-  ctx.fillStyle = haze
-  ctx.fillRect(0, 0, W, H)
-  ctx.restore()
+      // Atmospheric haze in beam path
+      ctx.save()
+      ctx.globalAlpha = 0.4 + 0.06 * Math.sin(t * 0.5)
+      const haze = ctx.createLinearGradient(spotCenterX, 0, W * 0.42, H * 0.7)
+      haze.addColorStop(0,    'rgba(0, 180, 220, 0.00)')
+      haze.addColorStop(0.15, 'rgba(0, 160, 210, 0.035)')
+      haze.addColorStop(0.4,  'rgba(0, 130, 190, 0.02)')
+      haze.addColorStop(0.7,  'rgba(0, 90, 150, 0.008)')
+      haze.addColorStop(1,    'rgba(0, 0, 0, 0.00)')
+      ctx.fillStyle = haze
+      ctx.fillRect(0, 0, W, H)
+      ctx.restore()
 
-  // ── Floating dust motes in beam ────────────────────────────────────────
-  for (let i = 0; i < 45; i++) {
-    const seed   = i * 137.508
-    // Confine particles within beam cone — left 0→50% width, full height
-    const px     = (Math.sin(seed * 0.7) * 0.4 + 0.3) * W * 0.48
-    const baseY  = (Math.cos(seed * 0.3) * 0.5 + 0.5) * H
-    const rise   = ((t * 14 + seed * 2.2) % H)
-    const drift  = Math.sin(t * 0.35 + seed * 0.04) * 16
-    const finalY = (baseY - rise + H) % H
-    // Fade out particles outside beam area
-    const beamAlpha = Math.max(0, 1 - px / (W * 0.45))
-    const alpha  = (0.05 + 0.06 * Math.abs(Math.sin(t * 0.6 + i))) * beamAlpha
-    const sz     = 0.6 + Math.abs(Math.sin(seed)) * 0.9
+      // Floating dust motes — cyan tinted
+      for (let i = 0; i < 45; i++) {
+        const seed   = i * 137.508
+        const px     = (Math.sin(seed * 0.7) * 0.4 + 0.3) * W * 0.48
+        const baseY  = (Math.cos(seed * 0.3) * 0.5 + 0.5) * H
+        const rise   = ((t * 14 + seed * 2.2) % H)
+        const drift  = Math.sin(t * 0.35 + seed * 0.04) * 16
+        const finalY = (baseY - rise + H) % H
+        const beamAlpha = Math.max(0, 1 - px / (W * 0.45))
+        const alpha  = (0.04 + 0.05 * Math.abs(Math.sin(t * 0.6 + i))) * beamAlpha
+        const sz     = 0.6 + Math.abs(Math.sin(seed)) * 0.9
 
-    ctx.beginPath()
-    ctx.arc(px + drift, finalY, sz, 0, Math.PI * 2)
-    ctx.fillStyle = `rgba(255, 210, 100, ${alpha})`
-    ctx.fill()
-  }
+        ctx.beginPath()
+        ctx.arc(px + drift, finalY, sz, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(0, 229, 255, ${alpha})`
+        ctx.fill()
+      }
 
-  // ── Stage / pedestal ──────────────────────────────────────────────────
-  const stageX  = W * 0.5
-  const stageY  = H * 0.93
-  const stageRX = W * 0.18
-  const stageRY = H * 0.042
+      // Stage / pedestal — cyan tinted
+      const stageX  = W * 0.5
+      const stageY  = H * 0.93
+      const stageRX = W * 0.18
+      const stageRY = H * 0.042
 
-  // Stage outer ambient glow — lit by spotlight
-  const stageAmbient = ctx.createRadialGradient(
-    stageX, stageY, 0,
-    stageX, stageY, stageRX * 2.2
-  )
-  stageAmbient.addColorStop(0,   'rgba(200, 150, 20, 0.14)')
-  stageAmbient.addColorStop(0.35,'rgba(160, 110, 10, 0.06)')
-  stageAmbient.addColorStop(0.7, 'rgba(100,  70,  5, 0.02)')
-  stageAmbient.addColorStop(1,   'rgba(0,     0,  0, 0)')
-  ctx.fillStyle = stageAmbient
-  ctx.beginPath()
-  ctx.ellipse(stageX, stageY, stageRX * 2.4, stageRY * 3.5, 0, 0, Math.PI * 2)
-  ctx.fill()
+      const stageAmbient = ctx.createRadialGradient(stageX, stageY, 0, stageX, stageY, stageRX * 2.2)
+      stageAmbient.addColorStop(0,    'rgba(0, 180, 220, 0.12)')
+      stageAmbient.addColorStop(0.35, 'rgba(0, 140, 200, 0.05)')
+      stageAmbient.addColorStop(0.7,  'rgba(0, 80, 160, 0.02)')
+      stageAmbient.addColorStop(1,    'rgba(0, 0, 0, 0)')
+      ctx.fillStyle = stageAmbient
+      ctx.beginPath()
+      ctx.ellipse(stageX, stageY, stageRX * 2.4, stageRY * 3.5, 0, 0, Math.PI * 2)
+      ctx.fill()
 
-  // Stage body — dark metallic surface
-  const stageFill = ctx.createLinearGradient(
-    stageX - stageRX, stageY - stageRY,
-    stageX + stageRX, stageY + stageRY
-  )
-  stageFill.addColorStop(0,    'rgba(22, 16, 4, 0.96)')
-  stageFill.addColorStop(0.28, 'rgba(48, 34, 8, 0.98)')
-  stageFill.addColorStop(0.5,  'rgba(72, 52,12, 1.0)')
-  stageFill.addColorStop(0.72, 'rgba(48, 34, 8, 0.98)')
-  stageFill.addColorStop(1,    'rgba(22, 16, 4, 0.96)')
-  ctx.fillStyle = stageFill
-  ctx.beginPath()
-  ctx.ellipse(stageX, stageY, stageRX, stageRY, 0, 0, Math.PI * 2)
-  ctx.fill()
+      const stageFill = ctx.createLinearGradient(
+        stageX - stageRX, stageY - stageRY,
+        stageX + stageRX, stageY + stageRY
+      )
+      stageFill.addColorStop(0,    'rgba(4, 12, 28, 0.96)')
+      stageFill.addColorStop(0.28, 'rgba(6, 18, 40, 0.98)')
+      stageFill.addColorStop(0.5,  'rgba(8, 25, 55, 1.0)')
+      stageFill.addColorStop(0.72, 'rgba(6, 18, 40, 0.98)')
+      stageFill.addColorStop(1,    'rgba(4, 12, 28, 0.96)')
+      ctx.fillStyle = stageFill
+      ctx.beginPath()
+      ctx.ellipse(stageX, stageY, stageRX, stageRY, 0, 0, Math.PI * 2)
+      ctx.fill()
 
-  // Stage rim highlight — gold
-  const rimGrad = ctx.createLinearGradient(stageX - stageRX, stageY, stageX + stageRX, stageY)
-  rimGrad.addColorStop(0,    'rgba(160, 110, 15, 0)')
-  rimGrad.addColorStop(0.2,  'rgba(200, 155, 30, 0.4)')
-  rimGrad.addColorStop(0.42, 'rgba(240, 185, 45, 0.75)')
-  rimGrad.addColorStop(0.5,  'rgba(255, 210, 60, 0.95)')
-  rimGrad.addColorStop(0.58, 'rgba(240, 185, 45, 0.75)')
-  rimGrad.addColorStop(0.8,  'rgba(200, 155, 30, 0.4)')
-  rimGrad.addColorStop(1,    'rgba(160, 110, 15, 0)')
-  ctx.strokeStyle = rimGrad
-  ctx.lineWidth   = 1.2
-  ctx.beginPath()
-  ctx.ellipse(stageX, stageY, stageRX, stageRY, 0, 0, Math.PI * 2)
-  ctx.stroke()
+      // Stage rim highlight — cyan
+      const rimGrad = ctx.createLinearGradient(stageX - stageRX, stageY, stageX + stageRX, stageY)
+      rimGrad.addColorStop(0,    'rgba(0, 140, 200, 0)')
+      rimGrad.addColorStop(0.2,  'rgba(0, 180, 230, 0.35)')
+      rimGrad.addColorStop(0.42, 'rgba(0, 210, 250, 0.65)')
+      rimGrad.addColorStop(0.5,  'rgba(0, 229, 255, 0.9)')
+      rimGrad.addColorStop(0.58, 'rgba(0, 210, 250, 0.65)')
+      rimGrad.addColorStop(0.8,  'rgba(0, 180, 230, 0.35)')
+      rimGrad.addColorStop(1,    'rgba(0, 140, 200, 0)')
+      ctx.strokeStyle = rimGrad
+      ctx.lineWidth   = 1.2
+      ctx.beginPath()
+      ctx.ellipse(stageX, stageY, stageRX, stageRY, 0, 0, Math.PI * 2)
+      ctx.stroke()
 
-  // ── Final vignette — deep edges ────────────────────────────────────────
-  const vig = ctx.createRadialGradient(
-    W * 0.42, H * 0.45, 0,
-    W * 0.42, H * 0.45,
-    Math.max(W, H) * 0.8
-  )
-  vig.addColorStop(0,    'rgba(8, 6, 0, 0)')
-  vig.addColorStop(0.38, 'rgba(8, 6, 0, 0.18)')
-  vig.addColorStop(0.65, 'rgba(5, 4, 0, 0.55)')
-  vig.addColorStop(1,    'rgba(3, 2, 0, 0.94)')
-  ctx.fillStyle = vig
-  ctx.fillRect(0, 0, W, H)
+      // Final vignette
+      const vig = ctx.createRadialGradient(W * 0.42, H * 0.45, 0, W * 0.42, H * 0.45, Math.max(W, H) * 0.8)
+      vig.addColorStop(0,    'rgba(6, 11, 20, 0)')
+      vig.addColorStop(0.38, 'rgba(6, 11, 20, 0.18)')
+      vig.addColorStop(0.65, 'rgba(4, 8, 16, 0.55)')
+      vig.addColorStop(1,    'rgba(2, 4, 10, 0.94)')
+      ctx.fillStyle = vig
+      ctx.fillRect(0, 0, W, H)
 
-  animRef.current = requestAnimationFrame(draw)
-}
+      animRef.current = requestAnimationFrame(draw)
+    }
 
     animRef.current = requestAnimationFrame(draw)
     return () => {
@@ -244,11 +229,11 @@ export default function Login() {
 
         .lr {
           min-height: 100vh;
-          background: #0a0800;
+          background: #060B14;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-family: 'Geist', sans-serif;
+          font-family: 'DM Sans', sans-serif;
           overflow: hidden;
           position: relative;
         }
@@ -283,54 +268,54 @@ export default function Login() {
         }
         .brand.v { opacity:1; transform:translateY(0); }
 
-        .logo {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 42px; height: 42px;
-          border-radius: 11px;
-          background: linear-gradient(135deg, rgba(200,150,20,0.2), rgba(160,110,10,0.1));
-          border: 1px solid rgba(200,160,40,0.25);
+        .logo-img {
+          width: 48px; height: 48px;
+          border-radius: 12px;
+          object-fit: contain;
           margin-bottom: 13px;
           animation: breathe 4s ease-in-out infinite;
         }
         @keyframes breathe {
-          0%,100% { box-shadow: 0 0 20px rgba(200,150,20,0.1); }
-          50%      { box-shadow: 0 0 40px rgba(220,170,30,0.22); }
+          0%,100% { box-shadow: 0 0 20px rgba(0,229,255,0.1); }
+          50%      { box-shadow: 0 0 40px rgba(0,229,255,0.22); }
         }
 
         .brand-name {
-          font-size: 19px;
-          font-weight: 600;
-          color: #e8d9a0;
-          letter-spacing: -0.3px;
+          font-size: 14px;
+          font-weight: 700;
+          color: #F8FAFC;
+          letter-spacing: 3px;
+          text-transform: uppercase;
+          line-height: 1;
         }
         .brand-sub {
-          font-size: 11.5px;
-          color: rgba(200,160,40,0.35);
-          margin-top: 4px;
-          letter-spacing: 0.4px;
+          font-size: 9px;
+          color: #00B4D8;
+          margin-top: 5px;
+          letter-spacing: 2.5px;
+          text-transform: uppercase;
+          font-weight: 500;
         }
 
         /* Card */
         .card {
-          background: rgba(12,12,12,.78);
-          border: 1px solid rgba(255,255,255,.08);
+          background: rgba(8, 14, 26, 0.82);
+          border: 1px solid rgba(255,255,255,.07);
           border-radius: 18px;
           padding: 30px;
           backdrop-filter: blur(40px);
           -webkit-backdrop-filter: blur(40px);
           box-shadow:
-            0 0 0 1px rgba(200,160,40,0.06) inset,
+            0 0 0 1px rgba(0,229,255,0.05) inset,
             0 40px 100px rgba(0,0,0,0.75),
-            0 0 60px rgba(180,130,10,0.06);
+            0 0 60px rgba(0,180,216,0.05);
           transform-style: preserve-3d;
           transition: transform 0.18s ease, box-shadow 0.18s ease;
           position: relative;
           overflow: hidden;
         }
 
-        /* Gold top rim */
+        /* Cyan top rim */
         .card::before {
           content: '';
           position: absolute;
@@ -338,28 +323,28 @@ export default function Login() {
           height: 1px;
           background: linear-gradient(90deg,
             transparent,
-            rgba(220,170,40,0.5) 30%,
-            rgba(255,210,60,0.7) 50%,
-            rgba(220,170,40,0.5) 70%,
+            rgba(0,180,216,0.4) 30%,
+            rgba(0,229,255,0.65) 50%,
+            rgba(0,180,216,0.4) 70%,
             transparent
           );
         }
 
-        /* Inner gold glow top */
+        /* Inner cyan glow top */
         .card::after {
           content: '';
           position: absolute;
           top: -60px; left: 50%;
           transform: translateX(-50%);
           width: 200px; height: 100px;
-          background: radial-gradient(ellipse, rgba(200,150,20,0.08) 0%, transparent 70%);
+          background: radial-gradient(ellipse, rgba(0,180,216,0.07) 0%, transparent 70%);
           pointer-events: none;
         }
 
         .card-title {
           font-size: 15px;
           font-weight: 600;
-          color: #d4c080;
+          color: #E2E8F0;
           margin-bottom: 20px;
           letter-spacing: 0.1px;
         }
@@ -370,7 +355,7 @@ export default function Login() {
           display: block;
           font-size: 9.5px;
           font-weight: 500;
-          color: rgba(200,160,40,0.45);
+          color: rgba(0,180,216,0.5);
           margin-bottom: 6px;
           letter-spacing: 1px;
           text-transform: uppercase;
@@ -379,21 +364,21 @@ export default function Login() {
         .fi {
           width: 100%;
           padding: 10px 14px;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(200,160,40,0.12);
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(0,180,216,0.12);
           border-radius: 8px;
-          color: #d4c080;
+          color: #CBD5E1;
           font-size: 13px;
           font-family: 'DM Sans', sans-serif;
           outline: none;
           transition: all 0.25s ease;
-          caret-color: #c8a830;
+          caret-color: #00E5FF;
         }
-        .fi::placeholder { color: rgba(200,160,40,0.2); }
+        .fi::placeholder { color: rgba(100,116,139,0.5); }
         .fi:focus {
-          border-color: rgba(200,160,40,0.3);
-          background: rgba(200,150,20,0.06);
-          box-shadow: 0 0 0 3px rgba(200,150,20,0.07), 0 0 20px rgba(200,150,20,0.06);
+          border-color: rgba(0,229,255,0.3);
+          background: rgba(0,180,216,0.05);
+          box-shadow: 0 0 0 3px rgba(0,180,216,0.07), 0 0 20px rgba(0,180,216,0.05);
         }
 
         .eye-btn {
@@ -402,34 +387,34 @@ export default function Login() {
           transform: translateY(-50%);
           background: none; border: none;
           cursor: pointer;
-          color: rgba(200,160,40,0.35);
+          color: rgba(0,180,216,0.35);
           display: flex; align-items: center;
           padding: 0; transition: color 0.2s;
         }
-        .eye-btn:hover { color: rgba(200,160,40,0.7); }
+        .eye-btn:hover { color: rgba(0,229,255,0.7); }
 
         .forgot { text-align:right; margin-top:5px; }
         .forgot a {
           font-size: 10.5px;
-          color: rgba(200,160,40,0.3);
+          color: rgba(0,180,216,0.35);
           text-decoration: none;
           transition: color 0.2s;
         }
-        .forgot a:hover { color: rgba(200,160,40,0.65); }
+        .forgot a:hover { color: rgba(0,229,255,0.7); }
 
-        /* Gold button */
+        /* Cyan button */
         .btn {
           width: 100%;
           padding: 11px 18px;
           margin-top: 16px;
           background: linear-gradient(135deg,
-            rgba(180,130,15,0.4),
-            rgba(220,170,30,0.25),
-            rgba(160,110,10,0.35)
+            rgba(0,150,200,0.35),
+            rgba(0,200,240,0.2),
+            rgba(14,165,233,0.3)
           );
-          border: 1px solid rgba(220,170,40,0.35);
+          border: 1px solid rgba(0,229,255,0.3);
           border-radius: 9px;
-          color: #e8c84a;
+          color: #00E5FF;
           font-size: 13px;
           font-weight: 500;
           font-family: 'DM Sans', sans-serif;
@@ -445,20 +430,20 @@ export default function Login() {
           content:'';
           position:absolute;
           top:0; left:-80%; width:60%; height:100%;
-          background: linear-gradient(90deg, transparent, rgba(255,210,60,0.12), transparent);
+          background: linear-gradient(90deg, transparent, rgba(0,229,255,0.1), transparent);
           animation: sheen 3s ease-in-out infinite;
         }
         @keyframes sheen { 0%{left:-60%} 50%,100%{left:110%} }
 
         .btn:hover:not(:disabled) {
-          border-color: rgba(220,170,40,0.55);
+          border-color: rgba(0,229,255,0.55);
           background: linear-gradient(135deg,
-            rgba(200,150,20,0.5),
-            rgba(240,190,40,0.32),
-            rgba(180,130,15,0.45)
+            rgba(0,180,216,0.45),
+            rgba(0,229,255,0.28),
+            rgba(14,165,233,0.4)
           );
-          color: #f5d860;
-          box-shadow: 0 8px 40px rgba(180,130,10,0.25), 0 0 20px rgba(200,150,20,0.12);
+          color: #fff;
+          box-shadow: 0 8px 40px rgba(0,180,216,0.2), 0 0 20px rgba(0,229,255,0.1);
           transform: translateY(-1px);
         }
         .btn:disabled { opacity:0.4; cursor:not-allowed; }
@@ -468,38 +453,38 @@ export default function Login() {
           position: relative; z-index:1;
           width: 26px; height: 26px;
           border-radius: 50%;
-          background: rgba(200,150,20,0.2);
-          border: 1px solid rgba(220,170,40,0.3);
+          background: rgba(0,180,216,0.15);
+          border: 1px solid rgba(0,229,255,0.25);
           display: flex; align-items:center; justify-content:center;
           transition: all 0.25s;
         }
         .btn:hover .btn-arrow {
-          background: rgba(200,150,20,0.35);
+          background: rgba(0,180,216,0.3);
           transform: translateX(2px);
         }
 
         .spin {
           width:13px; height:13px;
-          border:1.5px solid rgba(200,160,40,0.3);
-          border-top-color: #e8c84a;
+          border:1.5px solid rgba(0,180,216,0.3);
+          border-top-color: #00E5FF;
           border-radius:50%;
           animation: sp 0.7s linear infinite;
         }
         @keyframes sp { to{transform:rotate(360deg)} }
 
         .divider { display:flex; align-items:center; gap:12px; margin:18px 0; }
-        .dl { flex:1; height:1px; background:rgba(200,160,40,0.08); }
-        .dt { font-size:10px; color:rgba(200,160,40,0.22); letter-spacing:0.5px; }
+        .dl { flex:1; height:1px; background:rgba(0,180,216,0.08); }
+        .dt { font-size:10px; color:rgba(0,180,216,0.25); letter-spacing:0.5px; }
 
-        .rl { text-align:center; font-size:12px; color:rgba(200,160,40,0.3); }
-        .rl a { color:rgba(220,180,50,0.6); text-decoration:none; font-weight:500; transition:color 0.2s; }
-        .rl a:hover { color:rgba(240,200,60,0.9); }
+        .rl { text-align:center; font-size:12px; color:rgba(100,116,139,0.7); }
+        .rl a { color:rgba(0,180,216,0.7); text-decoration:none; font-weight:500; transition:color 0.2s; }
+        .rl a:hover { color:#00E5FF; }
 
         /* Demo */
         .demo {
           margin-top: 11px;
-          background: rgba(10,8,0,0.75);
-          border: 1px solid rgba(200,160,40,0.08);
+          background: rgba(6,11,20,0.8);
+          border: 1px solid rgba(0,180,216,0.08);
           border-radius: 11px;
           padding: 13px 16px;
           backdrop-filter: blur(20px);
@@ -510,7 +495,7 @@ export default function Login() {
         .demo.v { opacity:1; transform:translateY(0); }
         .demo-t {
           font-size:9px; font-weight:500;
-          color:rgba(200,160,40,0.25);
+          color:rgba(0,180,216,0.3);
           letter-spacing:0.9px;
           text-transform:uppercase;
           margin-bottom:9px;
@@ -520,22 +505,22 @@ export default function Login() {
           justify-content:space-between;
           padding:5px 0;
         }
-        .demo-r + .demo-r { border-top:1px solid rgba(200,160,40,0.05); }
-        .demo-role { font-size:11px; color:rgba(200,160,40,0.35); font-weight:500; min-width:48px; }
-        .demo-cred { font-size:11px; color:rgba(200,160,40,0.2); }
+        .demo-r + .demo-r { border-top:1px solid rgba(0,180,216,0.05); }
+        .demo-role { font-size:11px; color:rgba(0,180,216,0.4); font-weight:500; min-width:48px; }
+        .demo-cred { font-size:11px; color:rgba(100,116,139,0.4); }
         .demo-btn {
           font-size:10px;
-          color:rgba(200,160,40,0.45);
+          color:rgba(0,180,216,0.5);
           cursor:pointer; padding:2px 9px;
           border-radius:5px;
-          border:1px solid rgba(200,160,40,0.15);
-          background:rgba(200,150,20,0.05);
+          border:1px solid rgba(0,180,216,0.15);
+          background:rgba(0,180,216,0.05);
           transition:all 0.2s;
         }
         .demo-btn:hover {
-          background:rgba(200,150,20,0.12);
-          color:rgba(220,180,50,0.8);
-          border-color:rgba(200,160,40,0.28);
+          background:rgba(0,180,216,0.12);
+          color:rgba(0,229,255,0.85);
+          border-color:rgba(0,229,255,0.3);
         }
       `}</style>
 
@@ -545,16 +530,9 @@ export default function Login() {
         <div className={`cw ${mounted ? 'v' : ''}`}>
 
           <div className={`brand ${mounted ? 'v' : ''}`}>
-            <div className="logo">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none"
-                stroke="rgba(220,170,40,0.8)" strokeWidth="1.8"
-                strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-              </svg>
-            </div>
+            <img src={logo} alt="Resolva" className="logo-img" />
             <div className="brand-name">Resolva</div>
-            <div className="brand-sub">Campus Issue Management</div>
+            <div className="brand-sub">Campus Management</div>
           </div>
 
           <div
