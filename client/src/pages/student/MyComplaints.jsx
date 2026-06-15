@@ -7,16 +7,16 @@ import api from '../../api/axiosInstance'
 
 const STATUS_CFG = {
   open:        { label: 'Open',        color: '#F59E0B', bg: 'rgba(245,158,11,0.1)',  border: 'rgba(245,158,11,0.2)'  },
-  assigned:    { label: 'Assigned',    color: '#60A5FA', bg: 'rgba(96,165,250,0.1)',  border: 'rgba(96,165,250,0.2)'  },
-  in_progress: { label: 'In Progress', color: '#8B5CF6', bg: 'rgba(139,92,246,0.1)',  border: 'rgba(139,92,246,0.2)'  },
-  resolved:    { label: 'Resolved',    color: '#10B981', bg: 'rgba(16,185,129,0.1)',  border: 'rgba(16,185,129,0.2)'  },
-  verified:    { label: 'Verified',    color: '#10B981', bg: 'rgba(16,185,129,0.1)',  border: 'rgba(16,185,129,0.2)'  },
+  assigned:    { label: 'Assigned',    color: '#00E5FF', bg: 'rgba(0,229,255,0.1)',   border: 'rgba(0,229,255,0.2)'   },
+  in_progress: { label: 'In Progress', color: '#6366F1', bg: 'rgba(99,102,241,0.1)',  border: 'rgba(99,102,241,0.2)'  },
+  resolved:    { label: 'Resolved',    color: '#0EA5E9', bg: 'rgba(14,165,233,0.1)',  border: 'rgba(14,165,233,0.2)'  },
+  verified:    { label: 'Verified',    color: '#0EA5E9', bg: 'rgba(14,165,233,0.1)',  border: 'rgba(14,165,233,0.2)'  },
   rejected:    { label: 'Rejected',    color: '#EF4444', bg: 'rgba(239,68,68,0.1)',   border: 'rgba(239,68,68,0.2)'   },
 }
 
 const PRIORITY_CFG = {
-  low:      { label: 'Low',      color: '#94A3B8' },
-  medium:   { label: 'Medium',   color: '#60A5FA' },
+  low:      { label: 'Low',      color: '#64748B' },
+  medium:   { label: 'Medium',   color: '#0EA5E9' },
   high:     { label: 'High',     color: '#F59E0B' },
   critical: { label: 'Critical', color: '#EF4444' },
 }
@@ -77,7 +77,7 @@ export default function MyComplaints() {
   return (
     <Layout>
       <style>{`
-        .mc { padding: 28px 32px; min-height: 100vh; }
+        .mc { padding: 28px 32px; min-height: 100vh; background: #060B14; }
 
         /* Header */
         .mc-head {
@@ -88,20 +88,26 @@ export default function MyComplaints() {
           transition: all 0.6s cubic-bezier(0.16,1,0.3,1);
         }
         .mc-head.v { opacity:1; transform:translateY(0); }
-        .mc-title { font-size: 20px; font-weight: 600; color: #FFFFFF; letter-spacing: -0.3px; }
-        .mc-count { font-size: 12px; color: #94A3B8; }
+        .mc-title { font-size: 20px; font-weight: 600; color: #F8FAFC; letter-spacing: -0.3px; }
+        .mc-count { font-size: 12px; color: #64748B; }
 
         .new-btn {
           display: flex; align-items: center; gap: 6px;
-          padding: 8px 16px;
-          background: rgba(16,185,129,0.1);
-          border: 1px solid rgba(16,185,129,0.25);
-          border-radius: 8px; color: #10B981;
-          font-size: 12px; font-weight: 500;
-          text-decoration: none; transition: all 0.18s;
+          padding: 8px 20px;
+          background: rgba(0,229,255,0.08);
+          border: 1px solid rgba(0,229,255,0.25);
+          border-radius: 100px; color: #00E5FF;
+          font-size: 12px; font-weight: 600;
+          text-decoration: none; transition: all 0.22s;
           cursor: pointer;
         }
-        .new-btn:hover { background: rgba(16,185,129,0.18); transform: translateY(-1px); }
+        .new-btn:hover {
+          background: rgba(0,229,255,0.15);
+          border-color: rgba(0,229,255,0.5);
+          color: #fff;
+          transform: translateY(-1px);
+          box-shadow: 0 4px 20px rgba(0,229,255,0.15);
+        }
 
         /* Filter tabs */
         .filters {
@@ -114,16 +120,16 @@ export default function MyComplaints() {
         .f-tab {
           padding: 6px 12px; border-radius: 8px;
           font-size: 11.5px; font-weight: 500;
-          border: 1px solid #263238;
-          background: transparent; color: #94A3B8;
+          border: 1px solid rgba(0,229,255,0.06);
+          background: transparent; color: #64748B;
           cursor: pointer; transition: all 0.18s;
           text-transform: capitalize;
         }
-        .f-tab:hover { color: #FFFFFF; border-color: rgba(16,185,129,0.2); }
+        .f-tab:hover { color: #E2E8F0; border-color: rgba(0,229,255,0.2); background: rgba(0,229,255,0.03); }
         .f-tab.active {
-          background: rgba(16,185,129,0.1);
-          border-color: rgba(16,185,129,0.3);
-          color: #10B981;
+          background: rgba(0,229,255,0.08);
+          border-color: rgba(0,229,255,0.3);
+          color: #00E5FF;
         }
 
         /* List */
@@ -135,8 +141,8 @@ export default function MyComplaints() {
         .c-list.v { opacity:1; transform:translateY(0); }
 
         .c-card {
-          background: #18201C;
-          border: 1px solid #263238;
+          background: #080E1A;
+          border: 1px solid rgba(0,229,255,0.06);
           border-radius: 12px;
           padding: 14px 16px;
           display: flex; align-items: center; gap: 14px;
@@ -144,9 +150,10 @@ export default function MyComplaints() {
           position: relative; overflow: hidden;
         }
         .c-card:hover {
-          border-color: rgba(16,185,129,0.2);
-          background: #1c2820;
+          border-color: rgba(0,229,255,0.2);
+          background: #0C1525;
           transform: translateY(-1px);
+          box-shadow: 0 8px 30px rgba(0,0,0,0.3);
         }
         .c-card::before {
           content: ''; position: absolute;
@@ -155,14 +162,14 @@ export default function MyComplaints() {
         }
         .c-icon {
           width: 38px; height: 38px; border-radius: 10px;
-          background: rgba(16,185,129,0.07);
-          border: 1px solid #263238;
+          background: rgba(0,229,255,0.06);
+          border: 1px solid rgba(0,229,255,0.1);
           display: flex; align-items: center; justify-content: center;
-          color: #10B981; flex-shrink: 0;
+          color: #00E5FF; flex-shrink: 0;
         }
         .c-body { flex: 1; min-width: 0; }
         .c-title {
-          font-size: 13.5px; font-weight: 500; color: #FFFFFF;
+          font-size: 13.5px; font-weight: 500; color: #F1F5F9;
           white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
           margin-bottom: 6px;
         }
@@ -171,52 +178,54 @@ export default function MyComplaints() {
           font-size: 10px; font-weight: 500;
           padding: 2px 8px; border-radius: 20px; border: 1px solid;
         }
-        .c-time { font-size: 10.5px; color: #94A3B8; }
+        .c-time { font-size: 10.5px; color: #475569; }
         .c-right {
           display: flex; flex-direction: column;
           align-items: flex-end; gap: 6px; flex-shrink: 0;
         }
         .c-score {
-          font-size: 11px; color: #94A3B8;
+          font-size: 11px; color: #475569;
           display: flex; align-items: center; gap: 3px;
         }
         .vote-btn {
           display: flex; align-items: center; gap: 4px;
           padding: 3px 8px; border-radius: 6px;
-          font-size: 10.5px; font-weight: 500; color: #94A3B8;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid #263238;
+          font-size: 10.5px; font-weight: 500; color: #64748B;
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(0,229,255,0.08);
           cursor: pointer; transition: all 0.18s;
         }
-        .vote-btn:hover { color: #10B981; border-color: rgba(16,185,129,0.3); }
+        .vote-btn:hover { color: #00E5FF; border-color: rgba(0,229,255,0.3); background: rgba(0,229,255,0.05); }
 
         /* Skeleton */
         .skel {
           height: 68px; border-radius: 12px;
-          background: #18201C;
+          background: #080E1A;
           animation: sk 1.4s ease-in-out infinite;
           margin-bottom: 8px;
+          border: 1px solid rgba(0,229,255,0.05);
         }
         @keyframes sk { 0%,100%{opacity:.5} 50%{opacity:1} }
 
         /* Empty */
         .empty {
           text-align: center; padding: 56px 20px;
-          border: 1px dashed #263238; border-radius: 14px;
+          border: 1px dashed rgba(0,229,255,0.1); border-radius: 14px;
+          background: rgba(0,229,255,0.02);
         }
         .empty-ico {
           width: 48px; height: 48px; border-radius: 12px;
-          background: rgba(16,185,129,0.06); border: 1px solid #263238;
+          background: rgba(0,229,255,0.06); border: 1px solid rgba(0,229,255,0.1);
           display: flex; align-items: center; justify-content: center;
           margin: 0 auto 14px;
         }
-        .empty-t { font-size:14px; color:#FFFFFF; font-weight:500; margin-bottom:5px; }
-        .empty-s { font-size:12px; color:#94A3B8; }
+        .empty-t { font-size:14px; color:#F1F5F9; font-weight:500; margin-bottom:5px; }
+        .empty-s { font-size:12px; color:#475569; }
 
-        /* ── Detail panel (right drawer) ── */
+        /* Detail panel */
         .detail-overlay {
           position: fixed; inset: 0;
-          background: rgba(10,15,13,0.7);
+          background: rgba(6,11,20,0.75);
           backdrop-filter: blur(4px);
           z-index: 100;
           opacity: 0; pointer-events: none;
@@ -227,110 +236,101 @@ export default function MyComplaints() {
         .detail-panel {
           position: fixed; top: 0; right: 0; bottom: 0;
           width: 420px;
-          background: #111827;
-          border-left: 1px solid #263238;
+          background: #080E1A;
+          border-left: 1px solid rgba(0,229,255,0.1);
           z-index: 101;
           transform: translateX(100%);
           transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
           display: flex; flex-direction: column;
           overflow: hidden;
+          box-shadow: -20px 0 60px rgba(0,0,0,0.5);
         }
         .detail-panel.open { transform: translateX(0); }
 
         .dp-head {
           padding: 18px 20px;
-          border-bottom: 1px solid #263238;
+          border-bottom: 1px solid rgba(0,229,255,0.08);
           display: flex; align-items: flex-start;
           justify-content: space-between; gap: 12px;
           flex-shrink: 0;
+          background: #060B14;
         }
-        .dp-title { font-size: 14px; font-weight: 600; color: #FFFFFF; line-height: 1.4; flex: 1; }
+        .dp-title { font-size: 14px; font-weight: 600; color: #F8FAFC; line-height: 1.4; flex: 1; }
         .dp-close {
           width: 28px; height: 28px; border-radius: 7px;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid #263238;
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(0,229,255,0.1);
           display: flex; align-items: center; justify-content: center;
-          cursor: pointer; color: #94A3B8;
+          cursor: pointer; color: #64748B;
           flex-shrink: 0; transition: all 0.18s;
         }
-        .dp-close:hover { color: #FFFFFF; background: rgba(255,255,255,0.09); }
+        .dp-close:hover { color: #F8FAFC; background: rgba(0,229,255,0.08); border-color: rgba(0,229,255,0.25); }
 
         .dp-body { flex: 1; overflow-y: auto; padding: 18px 20px; }
+        .dp-body::-webkit-scrollbar { width: 3px; }
+        .dp-body::-webkit-scrollbar-track { background: transparent; }
+        .dp-body::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.15); border-radius: 2px; }
 
-        .dp-meta {
-          display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;
-        }
+        .dp-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
 
         .dp-desc {
           font-size: 13px; color: #94A3B8;
           line-height: 1.7; margin-bottom: 16px;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid #263238; border-radius: 8px;
+          background: rgba(0,229,255,0.03);
+          border: 1px solid rgba(0,229,255,0.08); border-radius: 8px;
           padding: 12px 14px;
         }
 
-        .dp-field {
-          display: flex; gap: 8px; align-items: flex-start;
-          margin-bottom: 10px;
-        }
+        .dp-field { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 10px; }
         .dp-field-label {
           font-size: 10.5px; font-weight: 500;
-          color: #94A3B8; text-transform: uppercase;
+          color: #475569; text-transform: uppercase;
           letter-spacing: 0.5px; min-width: 80px; margin-top: 1px;
         }
-        .dp-field-val { font-size: 13px; color: #FFFFFF; }
+        .dp-field-val { font-size: 13px; color: #E2E8F0; }
 
         /* AI badge */
         .ai-box {
-          background: rgba(16,185,129,0.06);
-          border: 1px solid rgba(16,185,129,0.15);
-          border-radius: 10px; padding: 12px 14px;
-          margin-bottom: 16px;
+          background: rgba(0,229,255,0.04);
+          border: 1px solid rgba(0,229,255,0.15);
+          border-radius: 10px; padding: 12px 14px; margin-bottom: 16px;
         }
         .ai-label {
-          font-size: 9.5px; font-weight: 500;
-          color: #10B981; letter-spacing: 0.8px;
+          font-size: 9.5px; font-weight: 600;
+          color: #00E5FF; letter-spacing: 1.5px;
           text-transform: uppercase; margin-bottom: 6px;
           display: flex; align-items: center; gap: 5px;
         }
-        .ai-reason { font-size: 12.5px; color: #94A3B8; line-height: 1.6; }
+        .ai-reason { font-size: 12.5px; color: #64748B; line-height: 1.6; }
 
         /* Timeline */
         .tl-label {
-          font-size: 10.5px; font-weight: 500;
-          color: #94A3B8; text-transform: uppercase;
-          letter-spacing: 0.6px; margin-bottom: 12px;
+          font-size: 10.5px; font-weight: 600;
+          color: #475569; text-transform: uppercase;
+          letter-spacing: 1.5px; margin-bottom: 12px;
           padding-top: 8px;
-          border-top: 1px solid #263238;
+          border-top: 1px solid rgba(0,229,255,0.08);
         }
-        .tl-item {
-          display: flex; gap: 12px; padding: 8px 0;
-          position: relative;
-        }
+        .tl-item { display: flex; gap: 12px; padding: 8px 0; position: relative; }
         .tl-item::before {
           content: ''; position: absolute;
           left: 11px; top: 28px; bottom: -8px;
-          width: 1px; background: #263238;
+          width: 1px; background: rgba(0,229,255,0.08);
         }
         .tl-item:last-child::before { display: none; }
         .tl-dot {
           width: 24px; height: 24px; border-radius: 50%;
-          background: #18201C; border: 1.5px solid #263238;
+          background: #0C1525; border: 1.5px solid rgba(0,229,255,0.15);
           display: flex; align-items: center; justify-content: center;
-          flex-shrink: 0; margin-top: 1px;
-          color: #10B981;
+          flex-shrink: 0; margin-top: 1px; color: #00E5FF;
         }
         .tl-content { flex: 1; }
-        .tl-action {
-          font-size: 12.5px; font-weight: 500; color: #FFFFFF;
-          text-transform: capitalize; margin-bottom: 2px;
-        }
-        .tl-meta { font-size: 11px; color: #94A3B8; }
+        .tl-action { font-size: 12.5px; font-weight: 500; color: #F1F5F9; text-transform: capitalize; margin-bottom: 2px; }
+        .tl-meta { font-size: 11px; color: #475569; }
         .tl-remark {
-          font-size: 11.5px; color: #94A3B8;
-          background: rgba(255,255,255,0.03); border: 1px solid #263238;
-          border-radius: 6px; padding: 6px 10px; margin-top: 6px;
-          line-height: 1.5;
+          font-size: 11.5px; color: #64748B;
+          background: rgba(0,229,255,0.03); border: 1px solid rgba(0,229,255,0.08);
+          border-radius: 6px; padding: 6px 10px; margin-top: 6px; line-height: 1.5;
         }
       `}</style>
 
@@ -373,7 +373,7 @@ export default function MyComplaints() {
               ? (
                 <div className="empty">
                   <div className="empty-ico">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" strokeWidth="1.5" strokeLinecap="round">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00E5FF" strokeWidth="1.5" strokeLinecap="round">
                       <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
                       <polyline points="14 2 14 8 20 8"/>
                     </svg>
@@ -396,7 +396,7 @@ export default function MyComplaints() {
                       style={{ '--pc': pr.color }}
                       onClick={() => openDetail(c)}
                     >
-                      <div className="c-icon" style={{ color: pr.color }}>
+                      <div className="c-icon" style={{ color: pr.color, background: `${pr.color}10`, borderColor: `${pr.color}20` }}>
                         {CAT_ICONS[c.category] || CAT_ICONS.other}
                       </div>
                       <div className="c-body">
@@ -405,7 +405,7 @@ export default function MyComplaints() {
                           <span className="c-badge" style={{ color:st.color, background:st.bg, borderColor:st.border }}>
                             {st.label}
                           </span>
-                          <span className="c-badge" style={{ color:pr.color, background:'rgba(255,255,255,0.04)', borderColor:pr.color+'30' }}>
+                          <span className="c-badge" style={{ color:pr.color, background:'rgba(255,255,255,0.03)', borderColor:pr.color+'30' }}>
                             {pr.label}
                           </span>
                           <span className="c-time">{timeAgo(c.createdAt)}</span>
@@ -438,7 +438,7 @@ export default function MyComplaints() {
         </div>
       </div>
 
-      {/* ── Detail panel overlay ── */}
+      {/* Detail panel overlay */}
       <div className={`detail-overlay ${selected ? 'open' : ''}`} onClick={closeDetail}/>
       <div className={`detail-panel ${selected ? 'open' : ''}`}>
         {selected && (
@@ -461,9 +461,9 @@ export default function MyComplaints() {
                   return (
                     <>
                       <span className="c-badge" style={{ color:st.color, background:st.bg, borderColor:st.border }}>{st.label}</span>
-                      <span className="c-badge" style={{ color:pr.color, background:'rgba(255,255,255,0.04)', borderColor:pr.color+'30' }}>{pr.label}</span>
+                      <span className="c-badge" style={{ color:pr.color, background:'rgba(255,255,255,0.03)', borderColor:pr.color+'30' }}>{pr.label}</span>
                       {selected.isAnonymous && (
-                        <span className="c-badge" style={{ color:'#94A3B8', background:'rgba(148,163,184,0.08)', borderColor:'rgba(148,163,184,0.2)' }}>Anonymous</span>
+                        <span className="c-badge" style={{ color:'#64748B', background:'rgba(100,116,139,0.08)', borderColor:'rgba(100,116,139,0.2)' }}>Anonymous</span>
                       )}
                     </>
                   )
@@ -491,7 +491,7 @@ export default function MyComplaints() {
               {selected.slaDeadline && (
                 <div className="dp-field">
                   <div className="dp-field-label">SLA Deadline</div>
-                  <div className="dp-field-val" style={{ color: selected.slaBreach ? '#EF4444' : '#10B981' }}>
+                  <div className="dp-field-val" style={{ color: selected.slaBreach ? '#EF4444' : '#0EA5E9' }}>
                     {new Date(selected.slaDeadline).toLocaleString()}
                     {selected.slaBreach && ' — Breached'}
                   </div>
@@ -516,7 +516,7 @@ export default function MyComplaints() {
               <div className="tl-label">Timeline</div>
               {loadingTL
                 ? Array.from({length:3}).map((_,i) => (
-                    <div key={i} style={{ height:40, borderRadius:8, background:'#18201C', marginBottom:8, animation:'sk 1.4s ease-in-out infinite' }}/>
+                    <div key={i} style={{ height:40, borderRadius:8, background:'#0C1525', marginBottom:8, border:'1px solid rgba(0,229,255,0.06)', animation:'sk 1.4s ease-in-out infinite' }}/>
                   ))
                 : timeline.map((entry, i) => (
                     <div className="tl-item" key={entry._id}>

@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import logo from '../../assets/logo.png'
 
 const NAV = {
   student: [
@@ -61,8 +62,8 @@ export default function Sidebar() {
         .sidebar {
           width: 224px;
           min-height: 100vh;
-          background: #151922;
-          border-right: 1px solid #2A3140;
+          background: #080E1A;
+          border-right: 1px solid rgba(0,229,255,0.06);
           display: flex;
           flex-direction: column;
           padding: 0;
@@ -70,104 +71,111 @@ export default function Sidebar() {
           position: sticky;
           top: 0;
           height: 100vh;
+          font-family: 'DM Sans', sans-serif;
         }
 
         .sb-brand {
           display: flex;
           align-items: center;
           gap: 10px;
-          padding: 20px 18px 18px;
-          border-bottom: 1px solid #2A3140;
-          margin-bottom: 4px;
+          padding: 18px 16px;
+          border-bottom: 1px solid rgba(0,229,255,0.06);
+          margin-bottom: 8px;
         }
-        .sb-logo {
+        .sb-logo-img {
           width: 32px; height: 32px;
           border-radius: 8px;
-          background: rgba(245,196,81,0.12);
-          border: 1px solid rgba(245,196,81,0.2);
-          display: flex; align-items: center; justify-content: center;
+          object-fit: contain;
           flex-shrink: 0;
         }
+        .sb-brand-text { display: flex; flex-direction: column; gap: 1px; }
         .sb-name {
-          font-size: 15px; font-weight: 600;
-          color: #FFFFFF; letter-spacing: -0.3px;
+          font-size: 12px; font-weight: 700;
+          color: #F8FAFC; letter-spacing: 2.5px;
+          text-transform: uppercase; line-height: 1;
+        }
+        .sb-tagline {
+          font-size: 8px; font-weight: 500;
+          color: #00B4D8; letter-spacing: 1.5px;
+          text-transform: uppercase; line-height: 1;
         }
 
         .sb-section {
-          font-size: 9.5px; font-weight: 500;
-          color: #A0A8B8;
-          letter-spacing: 1px; text-transform: uppercase;
-          padding: 16px 18px 6px;
-          opacity: 0.5;
+          font-size: 9px; font-weight: 600;
+          color: #334155;
+          letter-spacing: 1.5px; text-transform: uppercase;
+          padding: 12px 18px 6px;
         }
 
         .sb-link {
           display: flex;
           align-items: center;
           gap: 10px;
-          padding: 9px 18px;
+          padding: 9px 12px;
           font-size: 13px;
-          color: #A0A8B8;
+          color: #475569;
           text-decoration: none;
           transition: all 0.18s;
-          border-left: 2px solid transparent;
           margin: 1px 8px;
           border-radius: 8px;
+          border: 1px solid transparent;
         }
         .sb-link:hover {
-          color: #FFFFFF;
-          background: rgba(255,255,255,0.04);
+          color: #CBD5E1;
+          background: rgba(255,255,255,0.03);
+          border-color: rgba(0,229,255,0.05);
         }
         .sb-link.active {
-          color: #F5C451;
-          background: rgba(245,196,81,0.08);
-          border-left: none;
-          box-shadow: none;
+          color: #00E5FF;
+          background: rgba(0,229,255,0.07);
+          border-color: rgba(0,229,255,0.12);
         }
-        .sb-link.active svg { color: #F5C451; }
-        .sb-link svg { flex-shrink: 0; opacity: 0.7; }
-        .sb-link.active svg { opacity: 1; }
+        .sb-link.active svg { color: #00E5FF; opacity: 1; }
+        .sb-link svg { flex-shrink: 0; opacity: 0.5; transition: opacity 0.18s; }
+        .sb-link:hover svg { opacity: 0.8; }
 
         .sb-bottom {
           margin-top: auto;
-          padding: 14px 16px;
-          border-top: 1px solid #2A3140;
+          padding: 12px 14px;
+          border-top: 1px solid rgba(0,229,255,0.06);
         }
 
         .sb-user {
           display: flex;
           align-items: center;
           gap: 10px;
-          padding: 8px 0 12px;
+          padding: 8px 2px 12px;
         }
         .sb-avatar {
           width: 32px; height: 32px;
           border-radius: 50%;
-          background: linear-gradient(135deg, rgba(245,196,81,0.25), rgba(245,196,81,0.1));
-          border: 1px solid rgba(245,196,81,0.2);
+          background: rgba(0,180,216,0.1);
+          border: 1px solid rgba(0,229,255,0.15);
           display: flex; align-items: center; justify-content: center;
-          font-size: 12px; font-weight: 600; color: #F5C451;
+          font-size: 12px; font-weight: 600;
+          color: #00E5FF;
           flex-shrink: 0;
         }
         .sb-user-name {
           font-size: 12.5px; font-weight: 500;
-          color: #FFFFFF;
+          color: #E2E8F0;
           white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .sb-user-role {
-          font-size: 10.5px;
-          color: #A0A8B8;
+          font-size: 10px;
+          color: #475569;
           text-transform: capitalize;
           margin-top: 1px;
+          letter-spacing: 0.3px;
         }
 
         .sb-logout {
           width: 100%;
           padding: 8px 12px;
           background: transparent;
-          border: 1px solid #2A3140;
+          border: 1px solid rgba(0,229,255,0.08);
           border-radius: 8px;
-          color: #A0A8B8;
+          color: #475569;
           font-size: 12px;
           font-family: 'DM Sans', sans-serif;
           cursor: pointer;
@@ -175,22 +183,31 @@ export default function Sidebar() {
           transition: all 0.18s;
         }
         .sb-logout:hover {
-          border-color: rgba(245,196,81,0.2);
-          color: #F5C451;
-          background: rgba(245,196,81,0.04);
+          border-color: rgba(239,68,68,0.2);
+          color: #EF4444;
+          background: rgba(239,68,68,0.04);
         }
+
+        /* Active indicator dot */
+        .sb-link.active::before {
+          content: '';
+          position: absolute;
+          left: 8px;
+          width: 3px; height: 16px;
+          background: linear-gradient(180deg, #00E5FF, #6366F1);
+          border-radius: 2px;
+          opacity: 0.8;
+        }
+        .sb-link { position: relative; }
       `}</style>
 
       <div className="sidebar">
         <div className="sb-brand">
-          <div className="sb-logo">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="#F5C451" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
+          <img src={logo} alt="Resolva" className="sb-logo-img" />
+          <div className="sb-brand-text">
+            <div className="sb-name">Resolva</div>
+            <div className="sb-tagline">Campus Mgmt</div>
           </div>
-          <div className="sb-name">Resolva</div>
         </div>
 
         <div className="sb-section">Menu</div>
@@ -210,7 +227,7 @@ export default function Sidebar() {
             <div className="sb-avatar">
               {user?.name?.charAt(0)?.toUpperCase()}
             </div>
-            <div>
+            <div style={{ minWidth: 0 }}>
               <div className="sb-user-name">{user?.name}</div>
               <div className="sb-user-role">{user?.role}</div>
             </div>
