@@ -12,15 +12,15 @@ import api from '../../api/axiosInstance'
 import toast from 'react-hot-toast'
 
 const COLUMNS = [
-  { id: 'open',        label: 'Open',        color: '#F59E0B', bg: 'rgba(245,158,11,0.08)'  },
-  { id: 'assigned',    label: 'Assigned',    color: '#60A5FA', bg: 'rgba(96,165,250,0.08)'  },
-  { id: 'in_progress', label: 'In Progress', color: '#8B5CF6', bg: 'rgba(139,92,246,0.08)'  },
-  { id: 'resolved',    label: 'Resolved',    color: '#10B981', bg: 'rgba(16,185,129,0.08)'  },
+  { id: 'open',        label: 'Open',        color: '#F59E0B', bg: 'rgba(245,158,11,0.06)'  },
+  { id: 'assigned',    label: 'Assigned',    color: '#00E5FF', bg: 'rgba(0,229,255,0.06)'   },
+  { id: 'in_progress', label: 'In Progress', color: '#6366F1', bg: 'rgba(99,102,241,0.06)'  },
+  { id: 'resolved',    label: 'Resolved',    color: '#0EA5E9', bg: 'rgba(14,165,233,0.06)'  },
 ]
 
 const PRIORITY_CFG = {
-  low:      { label: 'Low',      color: '#94A3B8' },
-  medium:   { label: 'Medium',   color: '#60A5FA' },
+  low:      { label: 'Low',      color: '#475569' },
+  medium:   { label: 'Medium',   color: '#0EA5E9' },
   high:     { label: 'High',     color: '#F59E0B' },
   critical: { label: 'Critical', color: '#EF4444' },
 }
@@ -58,8 +58,8 @@ function KanbanCard({ complaint, isDragging }) {
     >
       <style>{`
         .k-card {
-          background: #1C212B;
-          border: 1px solid #2A3140;
+          background: #0C1525;
+          border: 1px solid rgba(0,229,255,0.08);
           border-radius: 10px;
           padding: 12px 14px;
           cursor: grab;
@@ -69,19 +69,19 @@ function KanbanCard({ complaint, isDragging }) {
           user-select: none;
         }
         .k-card:hover {
-          border-color: rgba(16,185,129,0.2);
-          box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+          border-color: rgba(0,229,255,0.2);
+          box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
         .k-card:active { cursor: grabbing; }
         .k-card::before {
           content: '';
           position: absolute; top:0; left:0; right:0; height:2px;
           background: var(--kc-color);
-          opacity: 0.6;
+          opacity: 0.7;
         }
         .kc-title {
           font-size: 12.5px; font-weight: 500;
-          color: #FFFFFF; line-height: 1.4;
+          color: #F1F5F9; line-height: 1.4;
           margin-bottom: 8px;
           display: -webkit-box;
           -webkit-line-clamp: 2;
@@ -99,10 +99,10 @@ function KanbanCard({ complaint, isDragging }) {
         .kc-meta {
           display: flex; align-items: center; gap: 6px;
         }
-        .kc-time { font-size: 10px; color: #94A3B8; }
-        .kc-score { font-size: 10px; color: #94A3B8; }
+        .kc-time  { font-size: 10px; color: #475569; }
+        .kc-score { font-size: 10px; color: #475569; }
         .kc-loc {
-          font-size: 10px; color: #94A3B8;
+          font-size: 10px; color: #475569;
           margin-top: 5px;
           display: flex; align-items: center; gap: 4px;
           white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -113,7 +113,7 @@ function KanbanCard({ complaint, isDragging }) {
         }
         .kc-votes {
           display: flex; align-items: center; gap: 3px;
-          font-size: 10px; color: #94A3B8;
+          font-size: 10px; color: #475569;
         }
       `}</style>
 
@@ -122,8 +122,8 @@ function KanbanCard({ complaint, isDragging }) {
         <div className="kc-row">
           <span className="kc-badge" style={{
             color: pr.color,
-            background: `${pr.color}18`,
-            borderColor: `${pr.color}35`,
+            background: `${pr.color}15`,
+            borderColor: `${pr.color}30`,
           }}>
             {pr.label}
           </span>
@@ -157,7 +157,7 @@ function KanbanCard({ complaint, isDragging }) {
           </div>
         )}
         {complaint.aiReason && (
-          <div style={{ marginTop:'6px', fontSize:'10px', color:'#10B981', display:'flex', alignItems:'center', gap:'3px' }}>
+          <div style={{ marginTop:'6px', fontSize:'10px', color:'#00E5FF', display:'flex', alignItems:'center', gap:'3px' }}>
             <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
             </svg>
@@ -175,8 +175,8 @@ function KanbanColumn({ column, cards, activeId }) {
     <div className="k-col">
       <style>{`
         .k-col {
-          background: #111827;
-          border: 1px solid #263238;
+          background: #080E1A;
+          border: 1px solid rgba(0,229,255,0.06);
           border-radius: 14px;
           display: flex;
           flex-direction: column;
@@ -187,7 +187,7 @@ function KanbanColumn({ column, cards, activeId }) {
         }
         .kc-head {
           padding: 14px 16px 12px;
-          border-bottom: 1px solid #263238;
+          border-bottom: 1px solid rgba(0,229,255,0.06);
           display: flex; align-items: center;
           justify-content: space-between;
           flex-shrink: 0;
@@ -200,27 +200,27 @@ function KanbanColumn({ column, cards, activeId }) {
         }
         .kc-label {
           font-size: 12px; font-weight: 600;
-          color: #FFFFFF; letter-spacing: 0.1px;
+          color: #F1F5F9; letter-spacing: 0.1px;
         }
         .kc-count {
           font-size: 10.5px; font-weight: 500;
           padding: 2px 7px; border-radius: 20px;
-          background: rgba(255,255,255,0.06);
-          color: #94A3B8; border: 1px solid #263238;
+          background: rgba(0,229,255,0.06);
+          color: #64748B; border: 1px solid rgba(0,229,255,0.1);
         }
         .kc-body {
           padding: 10px;
           display: flex; flex-direction: column; gap: 8px;
           flex: 1; overflow-y: auto;
         }
-        .kc-body::-webkit-scrollbar { width: 4px; }
+        .kc-body::-webkit-scrollbar { width: 3px; }
         .kc-body::-webkit-scrollbar-track { background: transparent; }
-        .kc-body::-webkit-scrollbar-thumb { background: #263238; border-radius: 2px; }
+        .kc-body::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.15); border-radius: 2px; }
         .kc-empty {
           flex: 1; display: flex; align-items: center;
           justify-content: center; padding: 24px 16px;
-          font-size: 12px; color: #94A3B8;
-          border: 1.5px dashed #263238; border-radius: 10px;
+          font-size: 12px; color: #475569;
+          border: 1.5px dashed rgba(0,229,255,0.08); border-radius: 10px;
           margin: 4px;
         }
       `}</style>
@@ -280,8 +280,6 @@ export default function KanbanBoard() {
     finally   { setLoading(false) }
   }
 
-  const getColumn = (id) => complaints.find(c => c._id === id)?.status || null
-
   const handleDragStart = ({ active }) => {
     setActiveId(active.id)
     setActiveCard(complaints.find(c => c._id === active.id))
@@ -292,11 +290,10 @@ export default function KanbanBoard() {
     setActiveCard(null)
     if (!over) return
 
-    const draggedId  = active.id
-    const overId     = over.id
-    const colIds     = COLUMNS.map(c => c.id)
+    const draggedId = active.id
+    const overId    = over.id
+    const colIds    = COLUMNS.map(c => c.id)
 
-    // Determine target column
     let targetStatus = colIds.includes(overId)
       ? overId
       : complaints.find(c => c._id === overId)?.status
@@ -306,7 +303,6 @@ export default function KanbanBoard() {
     const card = complaints.find(c => c._id === draggedId)
     if (!card || card.status === targetStatus) return
 
-    // Optimistic update
     setComplaints(prev =>
       prev.map(c => c._id === draggedId ? { ...c, status: targetStatus } : c)
     )
@@ -316,7 +312,6 @@ export default function KanbanBoard() {
       toast.success(`Moved to ${targetStatus.replace('_', ' ')}`)
     } catch (err) {
       toast.error('Failed to update status')
-      // Rollback
       setComplaints(prev =>
         prev.map(c => c._id === draggedId ? { ...c, status: card.status } : c)
       )
@@ -331,7 +326,7 @@ export default function KanbanBoard() {
   return (
     <Layout>
       <style>{`
-        .kb { padding: 28px 32px; min-height: 100vh; display: flex; flex-direction: column; }
+        .kb { padding: 28px 32px; min-height: 100vh; display: flex; flex-direction: column; background: #060B14; }
 
         .kb-head {
           display: flex; align-items: center;
@@ -342,20 +337,24 @@ export default function KanbanBoard() {
           flex-shrink: 0;
         }
         .kb-head.v { opacity:1; transform:translateY(0); }
-        .kb-title { font-size: 20px; font-weight: 600; color: #FFFFFF; letter-spacing: -0.3px; }
-        .kb-sub   { font-size: 13px; color: #94A3B8; margin-top: 2px; }
+        .kb-title { font-size: 20px; font-weight: 600; color: #F8FAFC; letter-spacing: -0.3px; }
+        .kb-sub   { font-size: 13px; color: #64748B; margin-top: 2px; }
 
         .kb-refresh {
           display: flex; align-items: center; gap: 6px;
-          padding: 7px 14px;
-          background: rgba(16,185,129,0.08);
-          border: 1px solid rgba(16,185,129,0.2);
-          border-radius: 8px; color: #10B981;
+          padding: 7px 16px;
+          background: rgba(0,229,255,0.06);
+          border: 1px solid rgba(0,229,255,0.2);
+          border-radius: 8px; color: #00E5FF;
           font-size: 12px; font-weight: 500;
           cursor: pointer; transition: all 0.18s;
           font-family: 'DM Sans', sans-serif;
         }
-        .kb-refresh:hover { background: rgba(16,185,129,0.15); }
+        .kb-refresh:hover {
+          background: rgba(0,229,255,0.12);
+          border-color: rgba(0,229,255,0.4);
+          box-shadow: 0 4px 16px rgba(0,229,255,0.1);
+        }
 
         .kb-board {
           display: flex; gap: 12px;
@@ -365,15 +364,15 @@ export default function KanbanBoard() {
           transition: all 0.7s 0.1s cubic-bezier(0.16,1,0.3,1);
         }
         .kb-board.v { opacity:1; transform:translateY(0); }
-        .kb-board::-webkit-scrollbar { height: 4px; }
+        .kb-board::-webkit-scrollbar { height: 3px; }
         .kb-board::-webkit-scrollbar-track { background: transparent; }
-        .kb-board::-webkit-scrollbar-thumb { background: #263238; border-radius: 2px; }
+        .kb-board::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.15); border-radius: 2px; }
 
         .kb-loading {
           display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; flex: 1;
         }
         .kb-skel {
-          background: #111827; border: 1px solid #263238;
+          background: #080E1A; border: 1px solid rgba(0,229,255,0.05);
           border-radius: 14px; height: 500px;
           animation: sk 1.4s ease-in-out infinite;
         }
@@ -382,7 +381,7 @@ export default function KanbanBoard() {
         .drag-overlay {
           opacity: 0.92;
           transform: rotate(2deg) scale(1.02);
-          box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+          box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,229,255,0.1);
           cursor: grabbing;
         }
       `}</style>
