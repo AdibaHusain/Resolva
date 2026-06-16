@@ -11,6 +11,8 @@ import Analytics from '../pages/admin/Analytics'
 import StaffDashboard from '../pages/staff/Dashboard'
 import TaskDetail from '../pages/staff/TaskDetail'
 import Home from '../pages/Home'
+import Heatmap from '../pages/admin/Heatmap'
+
 
 
 export default function AppRouter() {
@@ -31,6 +33,7 @@ export default function AppRouter() {
           <Route path="/admin/dashboard"  element={<AdminDashboard />} />
           <Route path="/admin/kanban"     element={<KanbanBoard />} />
           <Route path="/admin/analytics"  element={<Analytics />} />
+          <Route path="/admin/heatmap" element={<Heatmap />} />
         </Route>
 
         <Route element={<ProtectedRoute allowedRoles={['staff']} />}>

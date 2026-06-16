@@ -1,74 +1,83 @@
-import { useEffect, useRef } from 'react';
-import { io } from 'socket.io-client';
-import { useAuthStore } from '../store/authStore';
-import toast from 'react-hot-toast';
+import { useEffect, useRef } from 'react'
+import { io }               from 'socket.io-client'
+import { useAuthStore }     from '../store/authStore'
+import { useNotificationStore } from '../store/notificationStore'
+import toast from 'react-hot-toast'
 
-let socketInstance = null;
+let socketInstance = null
 
 export const useSocket = () => {
-  const { token, user } = useAuthStore();
-  const initialized = useRef(false);
+  const { token, user }          = useAuthStore()
+  const { addNotification }      = useNotificationStore()
+  const initialized              = useRef(false)
 
   useEffect(() => {
-    // Token nahi hai ya already connected hai toh skip
-    if (!token || !user) return;
-    if (!token || !user || initialized.current) return;
+    // Guard — must be logged in
+    if (!token || !user) return
+    if (initialized.current) return
 
-    // ── Connect karo ────────────────────────────────────────────────────────
-    socketInstance = io(import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000', {
-      auth:              { token },
-      withCredentials:   true,
-      transports:        ['websocket', 'polling'],
-    });
+    const URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api')
+      .replace('/api', '')
 
-    initialized.current = true;
+    socketInstance = io(URL, {
+      auth:            { token },
+      withCredentials: true,
+      transports:      ['websocket', 'polling'],
+    })
+
+    initialized.current = true
 
     socketInstance.on('connect', () => {
-      console.log('[Socket] Connected:', socketInstance.id);
-    });
+      console.log('[Socket] Connected:', socketInstance.id)
+    })
 
     socketInstance.on('connect_error', (err) => {
-      console.error('[Socket] Connection error:', err.message);
-    });
+      console.warn('[Socket] Connection error:', err.message)
+    })
 
-    // ── Events sunna — role ke hisaab se ────────────────────────────────────
+    // Admin events
     if (user.role === 'admin') {
       socketInstance.on('new_complaint', (data) => {
-        toast(`📋 New complaint: ${data.title}`, { duration: 5000 });
-      });
+        addNotification({ type: 'new_complaint', message: `New complaint: ${data.title}`, data, time: new Date() })
+        toast(`New complaint: ${data.title}`, { icon: '📋', duration: 5000 })
+      })
+      socketInstance.on('complaint_ai_updated', (data) => {
+        addNotification({ type: 'ai_analyzed', message: `AI analyzed — Priority: ${data.priority}`, data, time: new Date() })
+      })
     }
 
+    // Student + staff events
     socketInstance.on('complaint_updated', (data) => {
-      toast(`✅ Complaint status updated: ${data.status}`);
-    });
+      addNotification({ type: 'status_update', message: `Complaint status: ${data.status}`, data, time: new Date() })
+      toast(`Status updated: ${data.status}`, { icon: '✅' })
+    })
 
     socketInstance.on('complaint_ai_updated', (data) => {
-      toast(`🤖 AI analyzed — Priority: ${data.priority} (${data.severityScore}/10)`);
-    });
+      toast(`AI analyzed — ${data.priority} priority`, { icon: '🤖', duration: 3000 })
+    })
 
+    // Staff events
     if (user.role === 'staff') {
       socketInstance.on('task_assigned', (data) => {
-        toast(`🔔 New task assigned: ${data.title}`, { duration: 6000 });
-      });
+        addNotification({ type: 'task_assigned', message: `Task assigned: ${data.title}`, data, time: new Date() })
+        toast(`New task: ${data.title}`, { icon: '🔔', duration: 6000 })
+      })
     }
 
     socketInstance.on('disconnect', () => {
-      console.log('[Socket] Disconnected');
-      initialized.current = false;
-    });
+      initialized.current = false
+    })
 
-    // Cleanup — logout pe disconnect
     return () => {
       if (socketInstance) {
-        socketInstance.disconnect();
-        socketInstance = null;
-        initialized.current = false;
+        socketInstance.disconnect()
+        socketInstance = null
+        initialized.current = false
       }
-    };
-  }, [token, user]);
+    }
+  }, [token, user])
 
-  return socketInstance;
-};
+  return socketInstance
+}
 
-// Kisi bhi component se directly access ke liye
-export const getSocket = () => socketInstance;
+export const getSocket = () => socketInstance
