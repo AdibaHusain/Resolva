@@ -3,6 +3,8 @@ import Layout from '../../components/shared/Layout'
 import api from '../../api/axiosInstance'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '../../store/authStore'
+import { useNavigate } from 'react-router-dom'
+
 
 const PRIORITY_CFG = {
   low:      { label: 'Low',      color: '#475569' },
@@ -42,6 +44,7 @@ function getSLAStatus(task) {
 }
 
 export default function StaffDashboard() {
+  const navigate = useNavigate()
   const { user }                  = useAuthStore()
   const [vis, setVis]             = useState(false)
   const [tasks, setTasks]         = useState([])

@@ -6,6 +6,17 @@ import 'dotenv/config';
 
 const PORT = process.env.PORT || 5000;
 
+const allowedOrigins = [
+  "https://resolva.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:3000"
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
 const startServer = async () => {
   try {
     await connectDB();
