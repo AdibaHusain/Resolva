@@ -1,4 +1,5 @@
 import { createServer } from 'http';
+import cors from 'cors';
 import app from './app.js';
 import connectDB from './config/db.js';
 import { initSocket } from './sockets/index.js';
