@@ -201,24 +201,24 @@ export default function Login() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    try {
-      const { data } = await axios.post('http://localhost:5000/api/auth/login', form, {
-        withCredentials: true
-      })
-      setAuth(data.data.user, data.data.accessToken)
-      toast.success(`Welcome, ${data.data.user.name}`)
-      const role = data.data.user.role
-      if (role === 'student') navigate('/student/dashboard')
-      else if (role === 'admin') navigate('/admin/dashboard')
-      else if (role === 'staff') navigate('/staff/dashboard')
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'Invalid credentials')
-    } finally {
-      setLoading(false)
-    }
+  e.preventDefault()
+  setLoading(true)
+  try {
+    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, form, {
+      withCredentials: true
+    })
+    setAuth(data.data.user, data.data.accessToken)
+    toast.success(`Welcome, ${data.data.user.name}`)
+    const role = data.data.user.role
+    if (role === 'student') navigate('/student/dashboard')
+    else if (role === 'admin') navigate('/admin/dashboard')
+    else if (role === 'staff') navigate('/staff/dashboard')
+  } catch (err) {
+    toast.error(err.response?.data?.message || 'Invalid credentials')
+  } finally {
+    setLoading(false)
   }
+}
 
   return (
     <>
